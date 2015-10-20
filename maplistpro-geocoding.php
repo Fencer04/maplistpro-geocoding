@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: Map List Pro Geocoding
-Plugin URI: http://justin-hansen.com
+Plugin URI: https://github.com/Fencer04/maplistpro-geocoding
 Description: This plugin will geocode the items that have been imported or entered using the MapListPro Plugin.
 Version: 1.0
 Author: Justin Hansen
