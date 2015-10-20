@@ -43,7 +43,7 @@ function mlpg_geocoding_options_page(){?>
 //Geocoding User Interface
 function mlpg_geocoding_page(){?>
 	<h1>Map List Pro Geocoding</h1>
-	<p>Select your options and click the button to see how many items there are to geocode. The free Google Maps API only allows 2500 location requests per day.</p>
+	<p>Select your options and click the button to see how many items there are to geocode. In order for this to work the locations must have correct street addresses listed in their address field. The free Google Maps API only allows 2500 location requests per day.</p>
     <div id="countCheckArea">
         <input type="radio" name="locationRadio" value="all" /><label for="locationRadio">Geocode all map locations</label><br />
         <input type="radio" name="locationRadio" value="blank" checked="checked" /><label for="locationRadio">Geocode map locations without coordinates</label><br /><br />
