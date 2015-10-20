@@ -32,7 +32,7 @@ function mlpg_geocoding_options_page(){?>
         <table class="form-table">
             <tr valign="top">
                 <th scope="row">Google Geocoding API Key</th>
-                <td><input type="text" name="mlpg-api-key" style="width: 350px;" value="<?php echo esc_attr( get_option('mlpg-api-key') ); ?>" /></td>
+                <td><input type="text" name="mlpg-api-key" style="width: 350px;" value="<?php echo esc_attr( get_option('mlpg-api-key') ); ?>" /><br />See <a href="https://developers.google.com/maps/documentation/geocoding/intro" target="_blank">Google Geocoding API</a> to get your own key.</td>
             </tr>
         </table>
         <?php submit_button(); ?>
