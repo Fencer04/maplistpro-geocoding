@@ -65,9 +65,11 @@ function mlpg_add_javascript(){
         var stopLoop = false;
 		var locationList = "";
 		var totalItems = 0;
+        var processing = false;
         var errorList = new Array();
 		jQuery(document).ready(function(){
 			jQuery("input#checkGeo").click(function(){
+                processing = true;
 				jQuery("div#countArea").text('');
                 jQuery("#errorArea").text();
                 jQuery("#errorArea").hide();
@@ -82,12 +84,20 @@ function mlpg_add_javascript(){
 						locationList = response.locations;
 						setupGeoCodeButton();
                         jQuery("#countCheckArea").unblock();
+                        processing = false;
 					});
 			});
+
+            jQuery(window).bind('beforeunload', function(){
+                if(processing){
+                    return 'Are you sure you want to leave? Leaving will stop the geocoding process.';
+                }
+            });
 		});
 
 		function setupGeoCodeButton(){
 			jQuery("input.btnGeocode").click(function(){
+                processing = true;
                 jQuery("#errorArea").html('<strong>Errors:</strong>');
                 jQuery("#errorArea").show();
                 jQuery("#countCheckArea").block({
@@ -167,7 +177,7 @@ function mlpg_add_javascript(){
                 //make first call
                 next();
 			});
-		}
+        }
 
         //Check to see if any items have errors
         function checkErrors(){
@@ -177,6 +187,7 @@ function mlpg_add_javascript(){
                 totalItems = locationList.length;
                 jQuery("div#errorArea").append(locationList.length + " errors returned. After using the links above to fix any location data issues use this button to check those items again: <input type='button' name='btnGeocode' id='btnGeocode' class='btnGeocode' value='Geocode Locations With Errors' />");
                 errorList = new Array();
+                processing = false;
                 setupGeoCodeButton();
             }
         }
