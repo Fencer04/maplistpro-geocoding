@@ -29,6 +29,51 @@ jQuery(document).ready(function(){
             return 'Are you sure you want to leave? Leaving will stop the geocoding process.';
         }
     });
+
+    //Geocode a single address at the location entry to edit screen
+    if(jQuery('textarea#maplist_address')){
+        var addressContatainer = jQuery('textarea#maplist_address').parent();
+        addressContatainer.append('<input type="button" id="btnSingleGeocode" name="btnSingleGeocode" value="Geocode" />');
+
+        jQuery('#btnSingleGeocode').click(function(){
+            if(jQuery('textarea#maplist_address').val() == ""){
+                alert("The address field can't be empty");
+            }else{
+                jQuery.ajax({
+                    url: ajaxurl,
+                    method: "POST",
+                    data: {
+                        'action': 'mlpg_single_geocode',
+                        'address': jQuery('textarea#maplist_address').val()
+                    },
+                    dataType: 'json',
+                    async: true
+                }).success(function (response) {
+                    switch (response.status) {
+                        case "INVALID_REQUEST":
+                            alert("The geocoding request is invalid. Please check the address and try again.");
+                            break;
+                        case "REQUEST_DENIED":
+                            alert("The geocoding request was denied. Please check the API key to make sure it is valid.");
+                            break;
+                        case "OVER_QUERY_LIMIT":
+                            alert("The geocoding limit has been reached for today. Please try again tomorrow.");
+                            break;
+                        case "ZERO_RESULTS":
+                            alert("The geocoding request didn't return a result. Please check the address and try again.");
+                            break;
+                        case "UNKNOWN_ERROR":
+                            alert("The geocoding request returned an unknown error. Please check the address and try again.");
+                            break;
+                        default:
+                            jQuery('input#maplist_latitude').val(response.latitude);
+                            jQuery('input#maplist_longitude').val(response.longitude);
+                            alert('Geocoding successful. The latitude and longitude fields have been updated with the results. You will have to save the location before the changes take effect.');
+                    }
+                });
+            }
+        });
+    }
 });
 
 function setupGeoCodeButton(){

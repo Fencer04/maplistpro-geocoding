@@ -134,3 +134,32 @@ function mlpg_geocode(){
 
 	wp_die();
 }
+
+//Geocode single address
+add_action( 'wp_ajax_mlpg_single_geocode', 'mlpg_single_geocode' );
+function mlpg_single_geocode(){
+    //Grab API key from plugin settings page
+    $mapKey = get_option('mlpg-api-key');
+    $apiUrl = "https://maps.googleapis.com/maps/api/geocode/json";
+
+    $address = urlencode($_POST['address']);
+    $curlUrl = $apiUrl . "?address=" . $address . "&key=" . $mapKey;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $curlUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    $location = json_decode(curl_exec($ch), true);
+    $curlError = curl_error();
+    curl_close();
+
+    $status = $location['status'];
+    $latitude = $location['results'][0]['geometry']['location']['lat'];
+    $longitude = $location['results'][0]['geometry']['location']['lng'];
+
+    $returnArray = array('status' => $status, 'latitude' => $latitude, 'longitude' => $longitude);
+
+    echo json_encode($returnArray);
+
+    wp_die();
+}
